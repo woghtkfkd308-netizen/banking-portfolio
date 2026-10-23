@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#ffffff" name="theme-color"/>
+<title>뱅킹 UI 포트폴리오 데모</title>
+<style>
+:root{--yellow:#ffcf2f;--ink:#292a2d;--muted:#85888d;--bg:#f2f3f5;--line:#e8e9eb;--blue:#3984df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;padding-bottom:92px}
+.demo{background:#fff4c8;color:#6d5700;text-align:center;padding:5px 10px;font-size:10px;font-weight:700;letter-spacing:.1px}
+header{position:sticky;top:0;z-index:5;background:#fff;display:flex;align-items:center;gap:10px;padding:15px 20px;border-bottom:1px solid #f5f5f5;min-height:76px}
+.member{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:550;white-space:nowrap}.tier{border:1.5px solid #cfd2d5;border-radius:24px;padding:4px 8px;font-size:12px;display:flex;align-items:center;gap:5px}.bmark{background:#36a0df;color:white;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+.actions{margin-left:auto;display:flex;gap:17px;align-items:center}.action{border:0;background:none;font-size:25px;color:#555b61;padding:0;cursor:pointer}
+main{max-width:620px;margin:0 auto;padding:16px 16px 24px}.notice{background:white;border-radius:0 0 34px 34px;padding:20px 22px 25px;box-shadow:0 8px 18px #00000005;margin:-16px -16px 16px;min-height:224px}.notice h2{font-size:17px;line-height:1.55;margin:5px 0 15px}.notice p{color:#777;margin:0;font-size:16px}.notice-top{display:flex;align-items:center;justify-content:space-between}.notice-icon{font-size:42px}
+.promo{display:flex;align-items:center;justify-content:space-between;padding:20px 8px 22px;min-height:145px}.promo strong{font-size:16px}.promo p{margin:6px 0 0;font-size:13px}.promo .emoji{font-size:44px}.dots{color:#7d8288;letter-spacing:2px;margin-top:13px}
+.card{background:#fff;border-radius:23px;margin:13px 0;padding:21px 20px;box-shadow:0 2px 12px #00000003}.account-overview{padding-top:20px;padding-bottom:20px;margin-bottom:14px}.account-list{margin-top:0;padding-top:12px;padding-bottom:12px}.section-title{font-size:16px;font-weight:600;margin:0 0 16px}.all-accounts{display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:17px;padding:0 2px 0;margin-bottom:0}.arrow{font-size:27px;font-weight:400}
+.account{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:9px 0;border-top:0}.account-name{font-size:13px;color:#575b60;display:flex;align-items:center;gap:7px;min-width:0;white-space:nowrap;overflow:hidden}.bank-dot{display:grid;place-items:center;background:#8a7b60;color:#ffdb3d;width:27px;height:27px;border-radius:50%;font-size:11px;font-weight:600;flex-shrink:0}.account-num{color:#999;font-size:11px;flex-shrink:0}.balance{font-size:18px;font-weight:600;margin:3px 0 0 34px;letter-spacing:-.3px}.transfer{background:var(--yellow);border:0;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:400;align-self:center;cursor:pointer;white-space:nowrap}
+.account-tools{display:flex;align-items:center;gap:12px;background:#f7f7f7;margin:8px -20px -12px;padding:11px 20px;border-radius:0 0 23px 23px;color:#67696d;font-size:12px}.toggle{width:44px;height:21px;border-radius:14px;background:#a9a095;position:relative;border:0;cursor:pointer}.toggle:after{content:"";position:absolute;width:25px;height:25px;border-radius:50%;background:white;box-shadow:0 1px 3px #777;top:-2px;right:-1px;transition:.15s}.toggle.on{background:#f3ce42}.toggle.on:after{right:20px}.spacer{flex:1}
+.market-head{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600;margin-bottom:20px}.time{font-size:12px;color:#8b8e92;font-weight:400}.markets{display:grid;grid-template-columns:1fr 1fr}.market{padding:0 12px}.market:first-child{border-right:1px solid var(--line);padding-left:0}.market:last-child{padding-right:0;padding-left:22px}.market-label{font-size:13px;color:#6b6e73}.market-value{font-size:21px;color:var(--blue);font-weight:600;margin-top:2px;letter-spacing:-.4px}.market-change{color:var(--blue);font-size:13px;margin-top:4px}.invest{margin-top:24px;background:#f7f7f7;border:0;border-radius:12px;padding:18px;width:100%;font-size:17px;cursor:pointer}
+.link-card{display:flex;align-items:center;justify-content:space-between;gap:12px}.link-card .section-title{margin:0}.link-text{font-size:19px;font-weight:600;text-align:right}.small-label{font-size:14px;color:#777;margin-bottom:10px}.amount{font-size:22px;font-weight:600;text-align:right}.policy-title{font-size:15px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:8px 0 15px}.policy-value{font-size:20px;font-weight:600;text-align:right}.rate{border-left:1px solid #ddd;padding-left:12px;margin-left:8px}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#fff;border-top:1px solid #e8e8e8;padding:10px 7px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;min-height:78px}.nav{border:0;background:none;color:#6e7177;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;min-width:52px;cursor:pointer}.nav .ico{font-size:26px;line-height:1.2}.nav.active{color:#282a2d}.nav.active .ico{filter:drop-shadow(0 2px 0 #ffe276)}
+.toast{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);background:#303236;color:white;padding:12px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;white-space:nowrap}.toast.show{opacity:1}
+@media(min-width:650px){body{padding-top:18px}.demo{max-width:620px;margin:auto;border-radius:12px 12px 0 0}header{max-width:620px;margin:auto;border-radius:18px 18px 0 0}main{padding-top:20px}}
+</style>
+<style>
+/* 별도 계좌조회 데모 화면 */
+#accountScreen{display:none;position:fixed;inset:0;z-index:30;background:#fff;overflow-y:auto;color:#292a2d;font-size:15px;padding-bottom:40px}
+#accountScreen.open{display:block}
+.lookup-banner{background:#fff4c8;color:#685500;font-size:10px;text-align:center;padding:5px}
+.lookup-head{height:75px;display:flex;align-items:center;padding:0 20px;gap:18px;background:white}
+.lookup-head button{border:0;background:none;font-size:26px;color:#292a2d;padding:0;cursor:pointer}
+.lookup-head .lookup-title{font-size:23px;font-weight:400;flex:1;white-space:nowrap}
+.lookup-head .lookup-icons{display:flex;gap:18px;font-size:24px;align-items:center}
+.lookup-tabs{display:flex;gap:26px;padding:35px 26px 0;border-bottom:1px solid #ddd}
+.lookup-tabs button{border:0;background:white;color:#777;font-size:19px;padding:0 0 14px;font-weight:550}
+.lookup-tabs button.active{border-bottom:4px solid #292a2d;color:#292a2d}
+.lookup-content{padding:24px 18px}
+.lookup-person{border:1px solid #959b9e;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:8px;font-size:19px}
+.lookup-person b{font-weight:600}.lookup-person small{background:#fcf1fb;color:#ba27bc;padding:5px 8px;font-size:14px}.lookup-person span:last-child{margin-left:auto}
+.lookup-total{padding:18px 2px 22px}
+.lookup-total-label{display:flex;align-items:center;gap:10px;font-size:17px}
+.lookup-total-label .mini-switch{width:46px;height:23px;border-radius:15px;background:#968c7b;position:relative;display:inline-block}
+.lookup-total-label .mini-switch:after{content:"";position:absolute;right:0;top:-2px;width:27px;height:27px;background:white;border:1px solid #948a7c;border-radius:50%}
+.lookup-total-value{text-align:right;font-size:28px;font-weight:600;margin:20px 0}
+.lookup-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lookup-buttons button{background:#e9ecef;border:0;border-radius:3px;padding:12px;font-size:19px;font-weight:400}
+.lookup-buttons button:last-child{background:#ffd83c}
+.lookup-divider{height:12px;background:#f3f4f5}
+.lookup-tools{display:flex;justify-content:space-between;gap:7px;padding:20px 18px 15px;font-size:14px;white-space:nowrap}
+.lookup-section{margin:0 18px 14px;background:#f0f4fa;border-radius:7px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:550}
+.lookup-section span{color:#555;font-weight:400}
+.lookup-card{margin:0 18px 16px;border:1px solid #d9dcde;box-shadow:0 3px 8px #0000000d;border-radius:11px;padding:22px 23px 18px}
+.lookup-card .card-top{display:flex;justify-content:space-between;color:#969a9e}
+.lookup-card .card-top .pill{border:1px solid #c6c9cc;color:#777;padding:4px 8px;font-size:12px}
+.lookup-card .product{font-size:18px;font-weight:400;margin-top:9px}
+.lookup-card .number{font-size:19px;font-weight:600;margin-top:3px}
+.lookup-card .card-money{text-align:right;font-size:23px;font-weight:550;margin:24px 0 19px}
+.lookup-card .card-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lookup-card .card-buttons button{background:#e9ecef;border:0;border-radius:3px;padding:11px;font-size:17px;font-weight:400}
+.lookup-other{margin:12px 18px;background:#e9ecef;padding:17px 23px;border-radius:7px;font-size:17px;color:#666}
+.lookup-note{text-align:center;font-size:12px;color:#888;margin:25px 0}
+@media(min-width:650px){#accountScreen{left:50%;transform:translateX(-50%);max-width:620px}}
+</style>
+<style>
+/* 전체계좌조회: 참고 이미지에 맞춘 작은 크기와 가벼운 서체 */
+#accountScreen{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;font-weight:400;letter-spacing:-.45px}
+.lookup-head{height:70px;gap:14px;padding:0 22px}
+.lookup-head .lookup-title{font-size:18px;font-weight:400}
+.lookup-head button{font-size:29px;font-weight:300}
+.lookup-head .lookup-icons{font-size:23px;gap:17px}
+.lookup-tabs{padding-top:29px;gap:27px}
+.lookup-tabs button{font-size:16px;font-weight:550;padding-bottom:12px}
+.lookup-content{padding:20px 16px}
+.lookup-person{font-size:16px;padding:13px 18px}
+.lookup-person b{font-weight:550}
+.lookup-person small{font-size:12px}
+.lookup-total{padding:16px 2px 18px}
+.lookup-total-label{font-size:15px}
+.lookup-total-value{font-size:23px;font-weight:550;margin:22px 0 19px}
+.lookup-buttons button{font-size:16px;font-weight:400;padding:11px}
+.lookup-tools{font-size:13px;padding:19px 16px 15px}
+.lookup-section{font-size:15px;font-weight:550;padding:14px 22px;margin:0 16px 13px}
+.lookup-section span{font-size:15px}
+.lookup-card{margin:0 16px 14px;padding:19px 20px 17px}
+.lookup-card .product{font-size:15px;font-weight:400;margin-top:10px}
+.lookup-card .number{font-size:16px;font-weight:600;letter-spacing:-.35px;margin-top:4px}
+.lookup-card .card-money{font-size:21px;font-weight:550;margin:23px 0 17px}
+.lookup-card .card-buttons button{font-size:15px;font-weight:400;padding:11px}
+.lookup-card .card-top .pill{font-size:12px}
+.lookup-other{font-size:15px}
+</style>
+<style>
+#accountScreen [hidden]{display:none!important}
+.lookup-other{display:flex;align-items:center;justify-content:space-between;font-weight:550}
+.lookup-other span{font-size:14px;font-weight:400}
+.loan-toggle{border:0;width:calc(100% - 36px);text-align:left;cursor:pointer;font-family:inherit;color:#292a2d}
+.loan-empty{margin:0 18px 20px;padding:30px 16px 25px;border:1px solid #e0e3e6;border-radius:9px;background:#f8f9fa;text-align:center;font-size:16px}
+.loan-icon{font-size:48px;font-weight:200;color:#9aa3ad;position:relative;margin:0 auto 20px;width:64px}
+.loan-icon small{font-size:18px;position:absolute;right:-5px;bottom:0;background:#a1aab3;color:#fff;border-radius:50%;width:28px;height:28px;line-height:28px}
+.loan-empty button{display:block;margin:24px auto 0;background:white;border:1px solid #c6ccd2;border-radius:5px;padding:11px 18px;font-size:13px;color:#505861}
+#loanScreen{min-height:calc(100vh - 160px);position:relative;padding:120px 24px 100px;text-align:center}
+.loan-screen-empty{display:flex;flex-direction:column;align-items:center;gap:10px}
+.loan-screen-empty strong{font-size:18px;font-weight:550}
+.loan-screen-empty p{font-size:14px;color:#737b85;margin:3px 0}
+.loan-bottom-button{position:absolute;bottom:30px;left:6%;width:88%;background:#fff;border:1px solid #9da5ae;border-radius:5px;padding:14px;font-size:15px}
+</style><style>
+/* 상단 안내를 작고 차분하게 유지 */
+.demo,.lookup-banner{background:#fff!important;color:#777!important;font-size:11px!important;font-weight:400!important;letter-spacing:0!important;padding:3px 8px!important;line-height:1.4!important}
+</style>
+<style>
+/* Keep demo disclosure at the bottom instead of occupying the header. */
+.demo{position:fixed!important;top:auto!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;left:50%!important;transform:translateX(-50%);width:max-content;max-width:90vw;z-index:12;border-radius:4px;pointer-events:none;background:#ffffffed!important;color:#777!important;font-size:11px!important;padding:2px 7px!important}
+.lookup-banner{position:fixed!important;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;left:50%!important;transform:translateX(-50%);width:max-content;max-width:90vw;z-index:35;border-radius:4px;pointer-events:none;background:#ffffffed!important;color:#777!important;font-size:11px!important;padding:2px 7px!important}
+</style>
+<style>
+/* 대출 항목을 보험·공제/퇴직연금과 동일하게 */
+#loanToggle.lookup-other{font-family:inherit;font-size:15px;font-weight:400;color:#666;background:#e9ecef;padding:17px 23px;line-height:normal;letter-spacing:inherit}
+#loanToggle.lookup-other span{font-size:15px;font-weight:400;color:#666}
+/* 하단 고지: 다른 요소를 가리지 않는 간결한 표시 */
+.demo,.lookup-banner{box-shadow:none!important;border:0!important;border-radius:0!important;background:transparent!important;color:#666!important;font-size:11px!important;font-weight:400!important;padding:2px 4px!important}
+</style><style>
+/* Same category row typography, spacing and surface for all three sections. */
+#accountScreen .lookup-other,#accountScreen #loanToggle.lookup-other{font-family:inherit;font-size:15px;font-weight:400;color:#666;background:#e9ecef;letter-spacing:inherit;line-height:normal;padding:17px 23px;margin:12px 18px;border:0;border-radius:7px;box-sizing:border-box;}
+#accountScreen #loanToggle.lookup-other{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 36px);cursor:pointer;text-align:left;}
+#accountScreen #loanToggle.lookup-other span{font-family:inherit;font-size:15px;font-weight:400;color:#666;}
+/* Viewport-anchored disclosure, independent of document scrolling. */
+.demo{position:fixed!important;top:auto!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;left:50%!important;transform:translateX(-50%)!important;z-index:12!important;}
+#accountScreen .lookup-banner{position:fixed!important;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;left:50%!important;transform:translateX(-50%)!important;z-index:35!important;}
+</style>
+<style>
+/* 화면과 함께 움직이는 고정 오버레이를 해제하고 긴 페이지의 맨 아래에 배치 */
+.demo{position:static!important;transform:none!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;width:auto!important;max-width:none!important;margin:0 auto!important;text-align:center!important;background:transparent!important;box-shadow:none!important;color:#777!important;font-size:11px!important;padding:12px 6px!important}
+#accountScreen{min-height:100dvh!important;padding-bottom:0!important;display:none;flex-direction:column}
+#accountScreen.open{display:flex!important}
+#kbLookup{flex:1 0 auto}
+#accountScreen .lookup-banner{position:static!important;transform:none!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;display:block!important;width:100%!important;max-width:none!important;margin-top:auto!important;padding:12px 6px 20px!important;text-align:center!important;background:transparent!important;color:#777!important;font-size:11px!important;z-index:auto!important}
+#accountScreen .lookup-note{display:none!important}
+</style>
+<style>body{padding-bottom:110px!important}.demo{margin-bottom:85px!important}#accountScreen .lookup-banner{margin-bottom:0!important}</style><style>
+/* 전체계좌조회 화면 하단에 흰색 여백을 길게 확보 */
+#accountScreen{background:#fff!important;min-height:100dvh!important}
+#accountScreen .lookup-banner{margin-top:600px!important;background:#fff!important;padding-bottom:28px!important}
+@media(max-height:650px){#accountScreen .lookup-banner{margin-top:450px!important}}
+</style><style>
+/* v3: screenshot-informed portfolio refinement, not an official banking product */
+:root{--yellow:#ffda45;--bg:#f4f5f6;--ink:#333438;--blue:#3188df}
+body{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;letter-spacing:-.55px}
+header{height:90px;min-height:90px;padding:12px 22px;border:0;gap:10px}
+.member{font-size:19px;font-weight:600;gap:10px;letter-spacing:-.8px}
+.tier{padding:3px 9px 3px 3px;font-size:17px;border-color:#c8cbce;font-weight:650;gap:6px}
+.bmark{width:29px;height:29px;font-size:17px;font-weight:800}
+.actions{gap:20px}.action{font-size:28px;color:#50545b}
+main{padding:0 16px 20px}.promo{min-height:164px;padding:19px 10px 23px;margin:0 -4px 7px;gap:10px}
+.promo-copy{min-width:0}.promo strong{font-size:19px;font-weight:700;letter-spacing:-.8px}.promo p{font-size:15px;line-height:1.6;white-space:normal;color:#4c5057;margin-top:4px}.dots{font-size:11px;color:#888e95;letter-spacing:2px;margin-top:15px}
+.promo-art{position:relative;flex:0 0 98px;height:90px;display:flex;align-items:center;justify-content:center}
+.shield{font-size:35px;font-weight:800;color:white;background:linear-gradient(135deg,#80c8ff,#237bdf);border:4px solid #55a5ef;border-radius:25px 25px 32px 32px;width:68px;height:73px;display:grid;place-items:center;transform:rotate(-9deg);box-shadow:0 6px 13px #267ad62e}.coffee{position:absolute;font-size:38px;right:-3px;bottom:0;transform:rotate(10deg)}
+.card{border-radius:19px;margin:12px 0;padding:20px 20px;box-shadow:none}
+.account-overview{padding:23px 22px;margin-bottom:14px}.all-accounts{font-size:20px;font-weight:650}.arrow{font-size:30px;color:#53575d}
+.account-list{margin-top:0;padding:14px 20px 0}.account{padding:14px 0;gap:8px;align-items:center;min-height:91px}.account-name{font-size:15px;gap:7px;color:#55585d;letter-spacing:-.7px}.bank-dot{background:#6e685d;color:#ffdc43;width:30px;height:30px;font-size:12px}.account-num{font-size:13px;color:#70757b}.balance{font-size:19px;font-weight:650;margin:4px 0 0 37px}.transfer{font-size:15px;border-radius:6px;padding:10px 16px;min-width:56px;min-height:44px;background:#ffda45}.account-tools{margin:9px -20px 0;padding:14px 20px;background:#f8f8f8;font-size:14px;min-height:57px}.toggle{width:44px;background:#887e71}
+.market-head{font-size:17px;font-weight:550;margin-bottom:24px}.time{font-size:11px}.market-label{font-size:14px}.market-value{font-size:22px}.market-change{font-size:13px}.market:first-child .market-value,.market:first-child .market-change{color:#e94c55}.invest{margin-top:25px;font-size:16px;padding:17px;background:#f7f7f7}
+.bottom{min-height:79px;padding-top:12px}.nav{font-size:12px;gap:4px}.nav .ico{font-size:27px}.nav.active .ico{filter:none}.demo{font-size:11px!important;color:#777!important}
+@media(max-width:380px){header{padding:10px 14px}.member{font-size:16px;gap:6px}.tier{font-size:14px}.actions{gap:12px}.promo strong{font-size:17px}.promo p{font-size:13px}.promo-art{flex-basis:78px}.account-name{font-size:13px}.account-num{font-size:11px}.account-list{padding-left:16px;padding-right:16px}.account-tools{margin-left:-16px;margin-right:-16px}}
+</style><style>.portfolio-notice{font-size:10px;text-align:center;color:#777;background:#f6f6f6;padding:5px 8px;letter-spacing:0}</style><style id="demo-footer-v31">
+/* V3.1: non-floating demo disclosures at the end of the scrollable document. */
+html,body{min-height:100%;}
+body>.demo{position:static!important;display:block!important;transform:none!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%!important;max-width:620px!important;margin:600px auto 85px!important;padding:12px 8px!important;text-align:center!important;background:transparent!important;color:#777!important;font-size:11px!important;font-weight:400!important;pointer-events:none!important;}
+#accountScreen{background:#fff!important;min-height:100dvh!important;overflow-y:auto!important;}
+#accountScreen .lookup-banner{position:static!important;display:block!important;transform:none!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%!important;max-width:none!important;margin:600px 0 0!important;padding:12px 8px 28px!important;text-align:center!important;background:#fff!important;color:#777!important;font-size:11px!important;font-weight:400!important;pointer-events:none!important;}
+</style>
+<style>
+#savingsDetail{display:none;position:fixed;inset:0;z-index:45;background:white;overflow-y:auto;color:#292a2d;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;letter-spacing:-.45px}
+#savingsDetail.open{display:block}#savingsDetail button{font-family:inherit;cursor:pointer}
+.tx-head{height:75px;display:flex;align-items:center;gap:15px;padding:0 20px;background:white;position:sticky;top:0;z-index:3}.tx-head button{border:0;background:transparent;font-size:30px;color:#333;padding:0 5px}.tx-head strong{font-size:21px;font-weight:450;flex:1;white-space:nowrap}.tx-head .tx-icon{font-size:24px;font-weight:300}
+.tx-demo{background:#f4f5f7;border-top:1px solid #eef0f2;border-bottom:1px solid #eef0f2;color:#666;font-size:12px;padding:9px 21px;display:flex;align-items:center;gap:8px}.tx-demo b{font-weight:600;color:#5c6068}
+.tx-context{margin-top:9px;color:#777;font-size:12px;line-height:1.5}.tx-account{padding:35px 23px 37px}.tx-product{font-size:18px;color:#444}.tx-number{font-size:23px;font-weight:650;margin-top:7px}.tx-balance{font-size:38px;text-align:right;font-weight:650;margin:58px 0 12px}.tx-withdrawable{text-align:right;font-size:16px;color:#85888c}.tx-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:34px}.tx-buttons button{background:#e9ecef;border:0;border-radius:3px;padding:13px 4px;font-size:15px;color:#444}
+.tx-filter{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#f4f5f6;border-top:1px solid #d7dade;padding:18px 21px;font-size:15px}.tx-filter button{border:0;background:none;font-size:18px;color:#737b85}.tx-filter strong{font-size:15px;font-weight:650}.tx-range{padding:32px 22px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px}.tx-switch{display:flex;align-items:center;gap:8px;color:#777;white-space:nowrap}.tx-switch button{background:#a39686;width:39px;height:21px;border:0;border-radius:15px;position:relative}.tx-switch button:after{content:'';position:absolute;right:0;top:-2px;background:white;width:24px;height:24px;border-radius:50%;box-shadow:0 1px 3px #999}.tx-switch button.off{background:#ccc}.tx-switch button.off:after{right:16px}
+.tx-months{padding:0 22px}.tx-month{border-top:2px solid #5b5f65}.tx-month-header{display:flex;align-items:center;justify-content:space-between;width:100%;background:white;border:0;padding:22px 0;font-size:22px;font-weight:650;text-align:left;color:#292a2d}.tx-month-header span{font-size:19px;font-weight:400}.tx-month-body{border-top:1px solid #e8eaed;padding:26px 0 31px}.tx-meta{font-size:15px;color:#7c8087}.tx-type{font-size:17px;font-weight:650;margin-top:19px}.tx-credit{text-align:right;font-size:22px;font-weight:650;color:#3187e6;margin-top:24px}.tx-credit span{font-size:18px;font-weight:400;color:#292a2d}.tx-running{text-align:right;color:#777;font-size:15px;margin-top:5px}.tx-note{font-size:11px;color:#8b8e92;margin-top:12px}.tx-month.collapsed .tx-month-body{display:none}.tx-footer{margin-top:600px;padding:16px 8px 28px;text-align:center;font-size:11px;color:#777}
+@media(min-width:650px){#savingsDetail{max-width:620px;left:50%;transform:translateX(-50%)}}
+@media(max-width:380px){.tx-head strong{font-size:19px}.tx-number{font-size:20px}.tx-range{font-size:12px}.tx-switch{font-size:12px}}
+</style><link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="금융 UI 데모">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header>
+<div class="member"><span class="tier"><span class="bmark">B</span> 베스트</span><span>이재호님</span><span>›</span></div>
+<div class="actions"><button aria-label="알림" class="action" data-msg="새 알림이 없습니다">♧</button><button aria-label="검색" class="action" data-msg="검색 화면은 포트폴리오용 예시입니다">⌕</button><button aria-label="메뉴" class="action" data-msg="전체 메뉴 예시입니다">☰</button></div>
+</header>
+<main>
+
+<section class="promo"><div class="promo-copy"><strong>안전한 금융생활을 위한 안내</strong><p>편리하고 안전한 금융 서비스를 확인해 보세요</p><div class="dots">● ▰ ● ● ● Ⅱ</div></div><div aria-hidden="true" class="promo-art"><span class="shield">✓</span><span class="coffee">☕</span></div></section>
+<section aria-label="전체계좌조회 화면 열기" class="card account-overview" id="openAccountScreen" role="button" tabindex="0">
+<div class="all-accounts"><span><mark style="background:linear-gradient(transparent 60%,#fff0a5 60%)">내 계좌 전체보기</mark></span><span class="arrow">›</span></div>
+</section>
+<section class="card account-list">
+<div class="account">
+<div><div class="account-name"><span class="bank-dot">B</span> KB종합통장-보통... <span class="account-num">(7539) ▢</span></div><div class="balance">0원</div></div>
+<button class="transfer" data-msg="데모 화면입니다. 실제 송금은 지원하지 않습니다.">이체</button>
+</div>
+<div class="account">
+<div><div class="account-name"><span class="bank-dot">B</span> KB종합통장-보통... <span class="account-num">(1829) ▢</span></div><div class="balance">0원</div></div>
+<button class="transfer" data-msg="데모 화면입니다. 실제 송금은 지원하지 않습니다.">이체</button>
+</div>
+<div class="account">
+<div><div class="account-name"><span class="bank-dot">B</span> KB내맘대로 적금 <span class="account-num">(4062) ▢</span></div><div class="balance">15,400,000원</div></div>
+<button class="transfer" data-msg="데모 화면입니다. 계좌 관리 기능은 지원하지 않습니다.">관리</button>
+</div>
+<div class="account-tools"><span>⚙ 설정</span><span style="color:#ddd">│</span><span>잔액</span><button aria-label="잔액 표시 전환" class="toggle on" id="balanceToggle"></button><span class="spacer"></span><span>더보기 ﹀</span></div>
+</section>
+<section class="card">
+<div class="market-head"><span>오늘의 증시</span><span class="time">예시 데이터 · 실시간 아님</span></div>
+<div class="markets">
+<div class="market"><div class="market-label">코스피</div><div class="market-value">5,533.77</div><div class="market-change">▼ 201.89 (-3.52%)</div></div>
+<div class="market"><div class="market-label">코스닥</div><div class="market-value">764.10</div><div class="market-change">▼ 28.66 (-3.62%)</div></div>
+</div>
+<button class="invest" data-msg="투자 메뉴 예시입니다. 실제 투자 기능은 없습니다.">📈 주식 투자 메뉴 보기 ›</button>
+</section>
+<section class="card link-card"><div><div class="section-title">나의 총 자산</div><div class="small-label">포트폴리오 예시 데이터</div></div><div class="link-text" data-msg="자산 상세 화면 예시입니다">내 자산 한눈에 확인하기 ›</div></section>
+<section class="card"><div class="section-title">이번 주 카드결제</div><div class="amount">48,200원</div></section>
+<section class="card"><div class="section-title">사장님 정책자금</div><div class="policy-title">[예시] 2026년 소상공인 정책자금 안내</div><div class="policy-value">운영자금 7,000만원 <span class="rate">4.45%</span></div></section>
+</main>
+<nav aria-label="하단 메뉴" class="bottom">
+<button class="nav active" data-msg="상품 메뉴 예시입니다"><span class="ico">▢</span><span>상품</span></button>
+<button class="nav" data-msg="자산 메뉴 예시입니다"><span class="ico">◷</span><span>자산</span></button>
+<button class="nav" data-msg="지갑 메뉴 예시입니다"><span class="ico">▱</span><span>지갑</span></button>
+<button class="nav" data-msg="혜택 메뉴 예시입니다"><span class="ico">♧</span><span>혜택</span></button>
+<button class="nav" data-msg="주식 메뉴 예시입니다"><span class="ico">▤</span><span>카드</span></button>
+</nav>
+<div class="demo">비공식 UI 데모</div>
+<div aria-label="전체계좌조회 데모 화면" id="accountScreen">
+<div class="lookup-head"><button aria-label="뒤로가기" id="closeAccountScreen">‹</button><div class="lookup-title">전체계좌조회</div><div class="lookup-icons"><span>⌂</span><span>☰</span></div></div>
+<div class="lookup-tabs"><button class="active" data-lookup-tab="kb">KB국민은행</button><button data-lookup-tab="other">다른금융</button></div>
+<div id="kbLookup">
+<div class="lookup-content">
+<div class="lookup-person"><small>개인</small><b>이재호</b><span>⌄</span></div>
+<div class="lookup-total"><div class="lookup-total-label">총 잔액 <span style="color:#999">ⓘ</span><span class="mini-switch"></span></div><div class="lookup-total-value">15,400,000원</div>
+<div class="lookup-buttons"><button data-demo-action="모으기">모으기</button><button data-demo-action="이체">이체</button></div>
+</div>
+</div>
+<div class="lookup-divider"></div>
+<div class="lookup-tools"><span>⊕ 다른금융등록</span><span>▤ 목록형</span><span>⇅ 순서변경</span></div>
+<div class="lookup-section">예금 · 적금 <span>15,400,000원　⌃</span></div>
+<div class="lookup-card"><div class="card-top"><span class="pill">입출금</span><span>⋮</span></div><div class="product">KB종합통장-보통예금</div><div class="number">458301-01-507539</div><div class="card-money">0원</div><div class="card-buttons"><button data-demo-action="모으기">모으기</button><button data-demo-action="이체">이체</button></div></div>
+<div class="lookup-card"><div class="card-top"><span class="pill">입출금</span><span>⋮</span></div><div class="product">KB종합통장-보통예금</div><div class="number">429501-01-611829</div><div class="card-money">0원</div><div class="card-buttons"><button data-demo-action="모으기">모으기</button><button data-demo-action="이체">이체</button></div></div>
+<div class="lookup-card"><div class="card-top"><span class="pill">적금</span><span>⋮</span></div><div class="product">KB내맘대로 적금</div><div class="number">020123-45-678901</div><div class="card-money">15,400,000원</div><div class="card-buttons"><button data-demo-action="상세보기">상세보기</button><button data-demo-action="관리">관리</button></div></div>
+<button aria-expanded="false" class="lookup-other loan-toggle" id="loanToggle">대출 <span>0원　⌄</span></button>
+<div class="loan-empty" hidden="" id="loanEmpty"><div class="loan-icon">▤<small>₩</small></div><div>보유한 대출이 없습니다.</div><button id="loanDetails">대출 상세 화면 보기　›</button></div>
+<div class="lookup-other">보험 · 공제 <span>0원　⌄</span></div><div class="lookup-other">퇴직연금 <span>0원　⌄</span></div>
+</div>
+<div hidden="" id="loanScreen">
+<div class="loan-screen-empty"><div class="loan-icon">▤<small>₩</small></div><strong>보유한 대출이 없습니다.</strong><p>현재 조회되는 대출 계좌가 없습니다.</p></div>
+<button class="loan-bottom-button" id="loanBack">전체계좌조회로 돌아가기</button>
+</div>
+<div id="otherLookup" style="display:none;padding:40px 20px;text-align:center;color:#777">다른금융 조회는 데모에 포함되지 않았습니다.</div>
+<div class="lookup-banner">비공식 UI 데모</div>
+</div>
+<section id="savingsDetail" aria-label="적금 가상 거래내역 시연 화면">
+<div class="tx-head"><button id="closeSavingsDetail" aria-label="뒤로가기">‹</button><strong>거래내역조회</strong><span class="tx-icon" aria-hidden="true">⌂</span><span class="tx-icon" aria-hidden="true">☰</span></div>
+
+<div class="tx-account"><div class="tx-product">KB내맘대로 적금</div><div class="tx-number">020123-45-678901</div><div class="tx-context">시연용 가상 거래내역 · 실제 금융 거래 기록이 아닙니다.</div><div class="tx-balance">15,400,000원</div><div class="tx-withdrawable">누적 납입액 15,400,000원</div><div class="tx-buttons"><button data-msg="가상 데모에서 이체는 지원하지 않습니다">이체</button><button data-msg="가상 데모에서 모으기는 지원하지 않습니다">모으기</button><button data-msg="가상 데모에서 출금은 지원하지 않습니다">상세정보</button></div></div>
+<div class="tx-filter"><button aria-label="거래 검색" data-msg="가상 납입내역 7건이 표시됩니다">⌕</button><strong>입금 · 최신순　⌄</strong><span>▤　▦</span></div>
+<div class="tx-range"><span>2026.04.01 ~ 2026.10.23</span><div class="tx-switch"><span>잔액표기</span><button id="txBalanceToggle" aria-label="잔액 표시 전환" aria-pressed="true"></button></div></div>
+<div class="tx-months" id="savingsRows"></div>
+<div class="tx-footer">비공식 UI 데모 · 모든 거래 및 금액은 가상 데이터입니다</div>
+</section>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const toast=document.getElementById('toast');let toastTimer;
+function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2300)}
+document.querySelectorAll('[data-msg]').forEach(el=>el.addEventListener('click',()=>showToast(el.dataset.msg)));
+document.querySelectorAll('.nav').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));el.classList.add('active');showToast(el.dataset.msg)}));
+document.getElementById('balanceToggle').addEventListener('click',function(){this.classList.toggle('on');document.querySelectorAll('.balance').forEach(el=>el.textContent=this.classList.contains('on')?(el.dataset.value|| (el.dataset.value=el.textContent)):'••••••원')});
+
+
+const accountScreen=document.getElementById('accountScreen');
+function openAccounts(){accountScreen.classList.add('open');document.body.style.overflow='hidden';accountScreen.scrollTop=0;history.pushState({accounts:true},'','#accounts')}
+function closeAccounts(){accountScreen.classList.remove('open');document.body.style.overflow='';if(location.hash==='#accounts')history.back()}
+document.getElementById('openAccountScreen').addEventListener('click',openAccounts);
+document.getElementById('openAccountScreen').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openAccounts()}});
+document.getElementById('closeAccountScreen').addEventListener('click',()=>{if(!document.getElementById('loanScreen').hidden){showLoanScreen(false)}else{closeAccounts()}});
+window.addEventListener('popstate',()=>{accountScreen.classList.remove('open');document.body.style.overflow=''});
+document.querySelectorAll('[data-lookup-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-lookup-tab]').forEach(b=>b.classList.toggle('active',b===btn));let kb=btn.dataset.lookupTab==='kb';document.getElementById('kbLookup').style.display=kb?'block':'none';document.getElementById('otherLookup').style.display=kb?'none':'block'}));
+const loanToggle=document.getElementById('loanToggle');
+const loanEmpty=document.getElementById('loanEmpty');
+loanToggle.addEventListener('click',()=>{const expanded=loanToggle.getAttribute('aria-expanded')!=='true';loanToggle.setAttribute('aria-expanded',String(expanded));loanEmpty.hidden=!expanded;loanToggle.querySelector('span').textContent=expanded?'0원　⌃':'0원　⌄';});
+function showLoanScreen(show){document.getElementById('kbLookup').style.display=show?'none':'block';document.getElementById('loanScreen').hidden=!show;document.querySelector('.lookup-title').textContent=show?'대출':'전체계좌조회';accountScreen.scrollTop=0;}
+document.getElementById('loanDetails').addEventListener('click',()=>showLoanScreen(true));
+document.getElementById('loanBack').addEventListener('click',()=>showLoanScreen(false));
+const savingsDetail=document.getElementById('savingsDetail');
+const savingsRows=document.getElementById('savingsRows');
+const money=n=>n.toLocaleString('ko-KR')+'원';
+// 2026년 국내 은행 영업일 기준으로 조정한 시연용 일정.
+// 4/25·7/25·10/25는 주말, 5/25는 부처님오신날 대체공휴일,
+// 9/25는 추석 연휴에 해당합니다. 10월분은 요청에 따라 10/23로 설정.
+const demoDeposits=[
+ {month:10,date:'10.23',time:'11:27:06',reason:'25일 일요일 · 직전 영업일'},
+ {month:9,date:'09.23',time:'11:34:18',reason:'25일 추석 연휴 · 직전 영업일'},
+ {month:8,date:'08.25',time:'11:18:42',reason:'25일 정상 영업일'},
+ {month:7,date:'07.24',time:'11:25:29',reason:'25일 토요일 · 직전 영업일'},
+ {month:6,date:'06.25',time:'11:05:22',reason:'25일 정상 영업일'},
+ {month:5,date:'05.22',time:'11:14:00',reason:'25일 대체공휴일 · 직전 영업일'},
+ {month:4,date:'04.24',time:'11:41:09',reason:'25일 토요일 · 직전 영업일'}
+];
+for(const item of demoDeposits){
+ const section=document.createElement('div');section.className='tx-month';
+ section.innerHTML=`<button class="tx-month-header" aria-expanded="true">2026.${String(item.month).padStart(2,'0')} <span>⌃</span></button><div class="tx-month-body"><div class="tx-meta">${item.date} ${item.time}</div><div class="tx-type">적금</div><div class="tx-credit">+2,200,000<span>원</span></div><div class="tx-running">잔액 ${money((item.month-3)*2200000)}</div></div>`;
+ section.querySelector('button').addEventListener('click',()=>{section.classList.toggle('collapsed');const open=!section.classList.contains('collapsed');section.querySelector('button').setAttribute('aria-expanded',String(open));section.querySelector('button span').textContent=open?'⌃':'⌄';});
+ savingsRows.appendChild(section);
+}
+document.getElementById('txBalanceToggle').addEventListener('click',function(){this.classList.toggle('off');const show=!this.classList.contains('off');this.setAttribute('aria-pressed',String(show));document.querySelectorAll('.tx-running').forEach(el=>el.style.visibility=show?'visible':'hidden');});
+function openSavings(){savingsDetail.classList.add('open');savingsDetail.scrollTop=0;history.pushState({savings:true},'','#savings')}
+function closeSavings(){savingsDetail.classList.remove('open');if(location.hash==='#savings')history.back()}
+document.getElementById('closeSavingsDetail').addEventListener('click',closeSavings);
+window.addEventListener('popstate',()=>savingsDetail.classList.remove('open'));
+document.querySelectorAll('[data-demo-action]').forEach(btn=>btn.addEventListener('click',()=>{
+ if(btn.dataset.demoAction==='상세보기' && btn.closest('.lookup-card')?.querySelector('.product')?.textContent.includes('내맘대로 적금'))openSavings();
+ else showToast(btn.dataset.demoAction+' 기능은 데모에서 지원하지 않습니다.');
+}));
+</script>
+<script>
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.warn));
+}
+</script>
+</body>
+</html>
